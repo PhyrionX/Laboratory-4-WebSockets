@@ -63,7 +63,7 @@ public class ElizaServerTest {
 
 	@Test(timeout = 1000)
 	public void onChat() throws DeploymentException, IOException, URISyntaxException, InterruptedException {
-		// COMPLETE
+		//Se esperan cinco mensajes del servidor
 		CountDownLatch latch = new CountDownLatch(5);
 
 		List<String> list = new ArrayList<>();
@@ -73,7 +73,7 @@ public class ElizaServerTest {
 
 			@Override
 			public void onOpen(Session session, EndpointConfig config) {
-
+				// Se envía un mensaje con una de las palabras clave
 				session.getAsyncRemote().sendText("Maybe Im GOD...");
 
 				session.addMessageHandler(new MessageHandler.Whole<String>() {
@@ -81,14 +81,17 @@ public class ElizaServerTest {
 					@Override
 					public void onMessage(String message) {
 						list.add(message);
+						// Decrementamos el lach counter
 						latch.countDown();
 					}
 				});
 			}
 
 		}, configuration, new URI("ws://localhost:8025/websockets/eliza"));
+		// Esperamos hasta que el  contador llega a 0
 		latch.await();
 		assertEquals(5, list.size());
+		// comprobamos el mensaje sea correcto
 		assertEquals("You don't seem very certain.", list.get(3));
 	}
 
