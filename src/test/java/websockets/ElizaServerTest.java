@@ -74,7 +74,7 @@ public class ElizaServerTest {
 			@Override
 			public void onOpen(Session session, EndpointConfig config) {
 				// Se envía un mensaje con una de las palabras clave
-				session.getAsyncRemote().sendText("Maybe Im GOD...");
+				session.getAsyncRemote().sendText("LOL Im GOD...");
 
 				session.addMessageHandler(new MessageHandler.Whole<String>() {
 
